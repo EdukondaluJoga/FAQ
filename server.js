@@ -1,8 +1,11 @@
 const express = require('express');
+const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const faqRoutes = require('./routes/faq');
 const path = require('path');
 const { createClient } = require('redis');
+
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,10 +14,20 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Connect to MongoDB
+mongoose.connect(process.env.MONGOURL)
+.then(() => console.log('FAQ MongoDB connected'))
+.catch((err) => console.error(err));
 
+//Connect to Redis
+const redisClient = createClient();
+redisClient.connect()
+  .then(() => console.log('Redis connected'))
+  .catch((err) => console.error('Redis connection error:', err));
 
 // Make Redis available to routes via app locals
 app.locals.redisClient = redisClient;
+
 
 // API Routes
 app.use('/api/faqs', faqRoutes);
