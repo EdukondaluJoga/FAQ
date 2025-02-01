@@ -1,4 +1,4 @@
-const translate = require('@vitalets/google-translate-api');
+const { translate } = require('@vitalets/google-translate-api');
 
 async function translateText(text, targetLang) {
   try {
@@ -6,7 +6,7 @@ async function translateText(text, targetLang) {
     return res.text;
   } catch (err) {
     console.error(`Translation error to ${targetLang}:`, err);
-    return text; // Fallback to original text on error
+    return text; // Fallback to the original text on error
   }
 }
 
