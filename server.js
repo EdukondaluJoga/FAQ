@@ -19,13 +19,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGOURL)
-.then(() => console.log('FAQ MongoDB connected'))
+.then(() => console.log('FAQ MongoDB is connected'))
 .catch((err) => console.error(err));
 
 //Connect to Redis
 const redisClient = createClient();
 redisClient.connect()
-  .then(() => console.log('Redis connected'))
+  .then(() => console.log('FAQ Redis is connected'))
   .catch((err) => console.error('Redis connection error:', err));
 
 // Make Redis available to routes via app locals
