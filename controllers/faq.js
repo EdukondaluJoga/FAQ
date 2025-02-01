@@ -1,6 +1,6 @@
 const FAQ = require('../models/FAQ');
-const { translateFAQ, translateText } = require('../services/translationService');
-const { getCache, setCache } = require('../services/cacheService');
+const { translateFAQ, translateText } = require('../services/translation');
+const { getCache, setCache } = require('../services/cache');
 
 exports.getAllFAQs = async (req, res) => {
   try {
