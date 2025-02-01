@@ -14,6 +14,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Serve static files(Admin)
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGOURL)
 .then(() => console.log('FAQ MongoDB connected'))
@@ -32,6 +35,10 @@ app.locals.redisClient = redisClient;
 // API Routes
 app.use('/api/faqs', faqRoutes);
 
+// Admin panel route
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+  });
 
 // Start server only if file is run directly
 if (require.main === module) {

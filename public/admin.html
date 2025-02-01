@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FAQ Admin Panel</title>
+  <!-- Include CKEditor from CDN -->
+  <script src="https://cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+</head>
+<body>
+  <h1>FAQ Admin Panel</h1>
+  <form id="faqForm">
+    <div>
+      <label for="question">Question:</label><br>
+      <input type="text" id="question" name="question" required>
+    </div>
+    <div>
+      <label for="answer">Answer:</label><br>
+      <textarea id="answer" name="answer" required></textarea>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    // Initializing CKEditor on the answer container
+    CKEDITOR.replace('answer');
+
+    document.getElementById('faqForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const question = document.getElementById('question').value;
+      // Retrieving content from CKEditor
+      const answer = CKEDITOR.instances.answer.getData();
+
+      const response = await fetch('/api/faqs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ question, answer })
+      });
+      if (response.ok) {
+        alert('FAQ created successfully!');
+        // Reseting the form and Editor
+        document.getElementById('faqForm').reset();
+        CKEDITOR.instances.answer.setData('');
+      } else {
+        alert('Error creating FAQ');
+      }
+    });
+  </script>
+</body>
+</html>
