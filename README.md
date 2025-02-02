@@ -20,9 +20,12 @@
 ## **Configuration**
   1.  **Environment Variables:**
 Create a .env file in the root directory with the following content (replace with your actual credentials).
-2.	**MongoDB & Redis:**
+  2.	**MongoDB & Redis:**
 	•	MongoDB: Ensure your MongoDB Atlas cluster (or local MongoDB) is running.
 	•	Redis: Ensure Redis is installed and running on your machine or use a Redis cloud service.
+
+## **Access the admin panel:**
+Open your browser and navigate to http://localhost:3000/admin to create FAQs.
 
 ## API Endpoints
 
