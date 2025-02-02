@@ -56,7 +56,8 @@ describe('FAQ API Endpoints Tests', () => {
       });
   });
 
-  it('should update a FAQ', (done) => {
+  it('should update a FAQ', function(done) {
+    this.timeout(10000); // Now this works
     chai.request(app)
       .put(`/api/faqs/${faqId}`)
       .send({

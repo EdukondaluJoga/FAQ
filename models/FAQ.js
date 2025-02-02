@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const FAQSchema = new mongoose.Schema({
   question: { type: String, required: true },
   answer: { type: String, required: true },
-  // Language-specific 
+  // Language-specific fields
   question_hi: { type: String },
   answer_hi: { type: String },
   question_te: { type: String },
@@ -11,12 +11,22 @@ const FAQSchema = new mongoose.Schema({
   question_es: { type: String },
   answer_es: { type: String },
   question_fr: { type: String },
-  answer_fr: { type: String },
-  question_zh: { type: String },
-  answer_zh: { type: String }
+  answer_fr: { type: String }
 }, { timestamps: true });
 
-// Instance method for translated text dynamically
+// Add a toJSON transformation to include the _id field
+FAQSchema.set('toJSON', {
+  virtuals: true,
+  versionKey: false,
+  transform: function (doc, ret) {
+    // Convert _id to a string if it exists
+    if (ret._id) {
+      ret._id = ret._id.toString();
+    }
+    return ret;
+  }
+});
+
 FAQSchema.methods.getTranslation = function(lang) {
   let translatedQuestion;
   let translatedAnswer;
@@ -36,10 +46,6 @@ FAQSchema.methods.getTranslation = function(lang) {
     case 'fr':
       translatedQuestion = this.question_fr || this.question;
       translatedAnswer = this.answer_fr || this.answer;
-      break;
-    case 'zh':
-      translatedQuestion = this.question_zh || this.question;
-      translatedAnswer = this.answer_zh || this.answer;
       break;
     default:
       translatedQuestion = this.question;

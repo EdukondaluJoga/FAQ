@@ -63,14 +63,14 @@ exports.createFAQ = async (req, res) => {
     }
     // Automatically translate the FAQ into other languages
     const translations = await translateFAQ({ question, answer });
-
     const newFAQ = new FAQ({
       question,
       answer,
       ...translations
     });
-    await newFAQ.save();
-    res.status(201).json(newFAQ);
+    const savedFAQ = await newFAQ.save();
+    console.log('Created FAQ:', savedFAQ);
+    res.status(201).json(savedFAQ);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
@@ -92,7 +92,6 @@ exports.updateFAQ = async (req, res) => {
       faq.question_te = await translateText(question, 'te');
       faq.question_es = await translateText(question, 'es');
       faq.question_fr = await translateText(question, 'fr');
-      faq.question_zh = await translateText(question, 'zh');
     }
     // Updating answer and translations
     if (answer) {
@@ -101,7 +100,6 @@ exports.updateFAQ = async (req, res) => {
       faq.answer_te = await translateText(answer, 'te');
       faq.answer_es = await translateText(answer, 'es');
       faq.answer_fr = await translateText(answer, 'fr');
-      faq.answer_zh = await translateText(answer, 'zh');
     }
     await faq.save();
     res.json(faq);
